@@ -1,0 +1,29 @@
+{
+  "ts-node": {
+      // Do not forget to `npm i -D tsconfig-paths`
+      "require": ["tsconfig-paths/register"]
+  },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2020",
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": ["node"],
+    "strict": true, 
+    "esModuleInterop":true,
+    "paths": {
+      "@app/*": ["App/*"],
+      "@controllers/*": ["App/Controllers/*"],
+      "@models/*": ["App/Models/*"],
+      "@services/*": ["App/services/*"],
+      "@engine/*": ["Engine/*"]
+    },
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

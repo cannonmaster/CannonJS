@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model posts {
+  id        Int       @id @default(autoincrement())
+  title     String    @db.VarChar(255)
+  userLevel Int       @default(100)
+  userId    Int
+  user      user      @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "fk_user")
+  ratings   ratings[]
+
+  @@index([userId], map: "fk_user")
+}
+
+model profile {
+  id       Int    @id
+  counotry String @db.VarChar(200)
+  city     String @db.VarChar(200)
+  user     user   @relation(fields: [id], references: [id], onUpdate: Restrict, map: "fk_profile_user")
+}
+
+model ratings {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  postId  Int
+  ratings Int   @default(5)
+  posts   posts @relation(fields: [postId], references: [id], onUpdate: Restrict, map: "fk_ratings_postId_posts_id")
+  user    user  @relation(fields: [userId], references: [id], onUpdate: Restrict, map: "fk_ratings_userId_users_id")
+
+  @@unique([userId, postId], map: "uq_userId_postId")
+  @@index([postId], map: "fk_ratings_postId_posts_id")
+}
+
+model user {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(256)
+  phone   String?   @db.VarChar(20)
+  posts   posts[]
+  profile profile?
+  ratings ratings[]
+}
